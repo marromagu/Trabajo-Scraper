@@ -34,6 +34,8 @@ public class Scraper {
      * @param args the command line arguments
      */
     private static String nombre;
+    private static int jugadas;
+    private static int ganadas;
 
     public static void main(String[] args) {
         Scanner sc = new Scanner(System.in);
@@ -59,22 +61,21 @@ public class Scraper {
         try {
             HttpURLConnection urlConnection = (HttpURLConnection) url.openConnection();
             StringBuffer body = leerBody(urlConnection);
-            System.out.println(body.toString());
             String action = extraerFormAction(body.toString());
-            System.out.println(action);
             String selectName = extraerSelectName(body.toString());
-            System.out.println(selectName);
             ArrayList<String> opciones = extraerOpciones(body.toString());
             System.out.println(opciones.toString());
             List<String> partidasJugadas = new ArrayList<>();
             List<String> partidasGanadas = new ArrayList<>();
+
             for (String op : opciones) {
                 String respuesta = conexionGET(action + "?" + selectName + "=" + op);
+                System.out.println(action + "?" + selectName + "=" + op);
                 partidasJugadas.add(obtenerPartidasJugadas(respuesta, nombre));
                 partidasGanadas.add(obtenerPartidasGanadas(respuesta, nombre));
             }
-            System.out.println("Partidas jugadas por " + nombre + ": " + partidasJugadas.toString());
-            System.out.println("Partidas ganadas por " + nombre + ": " + partidasGanadas.toString());
+            System.out.println("Partidas jugadas por " + nombre + ": " + jugadas);
+            System.out.println("Partidas ganadas por " + nombre + ": " + ganadas);
 
         } catch (IOException ex) {
             Logger.getLogger(Scraper.class.getName()).log(Level.SEVERE, null, ex);
@@ -196,6 +197,7 @@ public class Scraper {
             for (Element h2 : h2s) {
                 if (h2.text().contains(jugador)) {
                     partidasJugadas = h2.text();
+                    jugadas++;
                 }
             }
         }
@@ -216,6 +218,7 @@ public class Scraper {
                     Element h1 = tablaPadre.selectFirst("h1");
                     if (h1 != null && h1.text().contains(jugador)) {
                         partidasGanadas = h1.text();
+                        ganadas++;
                     }
                 }
             }
