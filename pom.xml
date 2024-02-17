@@ -11,5 +11,13 @@
         <maven.compiler.target>21</maven.compiler.target>
         <exec.mainClass>deint.trabajo_ut5_6_7_scrapper.Trabajo_UT5_6_7_Scrapper</exec.mainClass>
     </properties>
+    <dependencies>
+        <dependency>
+            <groupId>org.jsoup</groupId>
+            <artifactId>jsoup</artifactId>
+            <version>1.14.3</version> <!-- Esta versión puede variar, verifica la última versión en https://jsoup.org/download -->
+        </dependency>
+    </dependencies>
+
     <name>Trabajo_Scraper</name>
 </project>
